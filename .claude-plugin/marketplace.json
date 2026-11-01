@@ -1,0 +1,17 @@
+{
+  "name": "k8s-security-pro",
+  "description": "Kubernetes security skills from K8s Security Pro.",
+  "owner": {
+    "name": "K8s Security Pro",
+    "email": "support@k8s-security.pro"
+  },
+  "plugins": [
+    {
+      "name": "k8s-security-audit",
+      "source": "./",
+      "description": "Read-only Kubernetes security audit: prioritized findings, YAML fixes, CIS / SOC 2 / ISO 27001 mapping.",
+      "version": "0.1.0",
+      "category": "security"
+    }
+  ]
+}

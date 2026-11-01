@@ -10,5 +10,21 @@
   "homepage": "https://k8s-security.pro",
   "repository": "https://github.com/k8s-security-pro/k8s-audit-skill",
   "license": "MIT",
-  "keywords": ["kubernetes", "security", "audit", "cis-benchmark", "soc2", "iso27001", "rbac", "networkpolicy", "eks", "gke", "aks"]
+  "keywords": [
+    "kubernetes",
+    "security",
+    "audit",
+    "cis-benchmark",
+    "soc2",
+    "iso27001",
+    "rbac",
+    "networkpolicy",
+    "eks",
+    "gke",
+    "aks"
+  ],
+  "privacyPolicyUrl": "https://k8s-security.pro/privacy#claude-skill",
+  "termsOfServiceUrl": "https://k8s-security.pro/terms",
+  "supportUrl": "https://github.com/k8s-security-pro/k8s-audit-skill/issues",
+  "documentationUrl": "https://k8s-security.pro/claude-skill"
 }

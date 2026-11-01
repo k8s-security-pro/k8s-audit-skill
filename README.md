@@ -76,7 +76,7 @@ single-file `.html` version (works offline, prints to PDF from any browser).
 skills/k8s-security-audit/
   SKILL.md                     workflow, safety rules, triage logic
   scripts/k8s-audit.sh         16 high-signal checks (kubectl + jq), JSON output
-  scripts/report_to_html.py    Markdown report -> offline HTML (bundles marked, MIT)
+  scripts/report_to_html.py    Markdown report -> static offline HTML (stdlib only, no JS)
   references/extra-checks.md   secrets in env, PSA, RBAC escalation paths, exposure...
   references/controls-mapping.md  CIS / SOC 2 / ISO 27001 per finding
   references/fixes.md          YAML fix snippets with rollout notes
@@ -86,6 +86,24 @@ skills/k8s-security-audit/
 `scripts/k8s-audit.sh` is the same script as
 [k8s-audit](https://github.com/k8s-security-pro/k8s-audit), which also runs
 standalone and in CI.
+
+## What it runs and what it sends
+
+Everything is in this repo as plain, readable files: no binaries, no minified
+code, no network calls of its own.
+
+- **Runs:** `kubectl get`, `kubectl auth can-i`, `kubectl version`,
+  `kubectl config current-context`, `jq`, `scripts/k8s-audit.sh` (kubectl + jq,
+  read-only) and `scripts/report_to_html.py` (Python standard library). On a
+  deep run only, and only if already installed: `kubescape` and
+  `trivy k8s --disable-node-collector`.
+- **Never runs:** `apply`, `create`, `patch`, `edit`, `delete`, `exec`, `cp`,
+  `port-forward`, `drain`, or anything that reads Secret values.
+- **Writes:** the report (`.md` and `.html`) in your current directory.
+- **Sends:** nothing. The skill makes no network requests. Command output is
+  read by Claude in your session like any other tool output. On a deep run,
+  Trivy downloads its vulnerability database and pulls your images from their
+  registries to scan them.
 
 ## Limits
 

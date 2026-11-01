@@ -124,7 +124,8 @@ spec:
 
 Rollout: one namespace at a time, add allow rules for each real flow, watch for
 blocked connections. Confirm the CNI enforces NetworkPolicy (the AWS VPC CNI
-needs network policy support enabled; Flannel alone does not enforce).
+needs network policy support enabled; plain Flannel does not enforce, but k3s
+ships its own NetworkPolicy controller alongside Flannel, so policies work there).
 
 ## Block cloud metadata endpoint
 

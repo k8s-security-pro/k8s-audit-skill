@@ -62,12 +62,14 @@ Then find who holds those roles:
 
 ```bash
 kubectl get clusterrolebindings,rolebindings -A -o json | jq -r '
-  .items[] | "\(.roleRef.kind)/\(.roleRef.name) -> " +
+  .items[] | select(.metadata.name | startswith("system:") | not)
+  | "\(.kind) \(.metadata.namespace // "-")/\(.metadata.name): \(.roleRef.kind)/\(.roleRef.name) -> " +
   ([.subjects[]? | "\(.kind):\(.namespace // "")/\(.name)"] | join(", "))'
 ```
 
 To see what one workload identity can actually do:
-`kubectl auth can-i --list --as=system:serviceaccount:<ns>:<sa>`
+`kubectl auth can-i --list -n <ns> --as=system:serviceaccount:<ns>:<sa>`
+(the `-n` matters: without it, namespaced Roles do not show up)
 
 ## Exposed Services
 

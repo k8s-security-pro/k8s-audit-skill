@@ -59,13 +59,23 @@ value is the triage, the grouping by root cause, and fixes that fit this cluster
      the cluster, for example the EKS or AKS one)
    - `trivy k8s --report summary --disable-node-collector`. Without that flag
      Trivy starts a node-collector Job, which is a write; only drop the flag if
-     the user says that is fine.
+     the user says that is fine. Trivy downloads its vulnerability database and
+     pulls the cluster's images from their registries to scan them; nothing
+     about the cluster is uploaded. Tell the user before running it, and add
+     `--skip-images` if they do not want image pulls.
    - kube-bench runs as a Job on a node, which is a write. Do not run it. If
      the user already has its output, read that.
-4. Managed control planes (EKS, GKE, AKS): API server flags, etcd encryption
-   and audit logging are set in the cloud provider, not visible from kubectl.
-   Ask the user, or list them as "verify in provider console" with the exact
-   setting name (see `references/extra-checks.md`).
+4. Control plane settings (API server flags, secrets encryption, audit logging):
+   - Managed (EKS, GKE, AKS): set in the cloud provider, not visible from
+     kubectl. Ask the user, or list them as "verify in provider console" with
+     the exact setting name (see `references/extra-checks.md`).
+   - kubeadm: the API server runs as a static pod; read its flags with
+     `kubectl get pod -n kube-system -l component=kube-apiserver -o yaml`.
+   - k3s / RKE2: the control plane is embedded. Node annotations
+     (`k3s.io/node-args`) show the server flags; config files on the node do not.
+   A setting you saw directly is a finding; a setting you inferred from
+   something missing is "appears off, verify" in the finding text, or goes in
+   "Not assessed" if you have no evidence either way.
 
 Keep raw outputs in memory or in a scratch directory. Do not dump them into the
 report.
@@ -128,7 +138,8 @@ Adjust with context, and say why when you do:
   privileges must match the vendor's docs.
 - An auto-mounted token is Low if that ServiceAccount has no RoleBindings, High
   if it can read Secrets or create pods. Check with
-  `kubectl auth can-i --list --as=system:serviceaccount:<ns>:<sa>`. In manifest
+  `kubectl auth can-i --list -n <ns> --as=system:serviceaccount:<ns>:<sa>` (without
+  `-n` it only shows cluster-scoped rights and misses namespaced Roles). In manifest
   mode, use the RBAC objects in the same manifests; if there are none, rate it
   Medium and say the bindings could not be seen.
 - Secrets: a literal credential in a manifest, ConfigMap or env value is High

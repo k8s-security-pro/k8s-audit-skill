@@ -67,7 +67,8 @@ running anything.
 > we have a SOC 2 audit next month, what will the auditor flag in this cluster?
 ```
 
-The report is saved as `k8s-security-report-<context>-<date>.md`.
+The report is saved as `k8s-security-report-<context>-<date>.md` plus a
+single-file `.html` version (works offline, prints to PDF from any browser).
 
 ## What is inside
 
@@ -75,6 +76,7 @@ The report is saved as `k8s-security-report-<context>-<date>.md`.
 skills/k8s-security-audit/
   SKILL.md                     workflow, safety rules, triage logic
   scripts/k8s-audit.sh         16 high-signal checks (kubectl + jq), JSON output
+  scripts/report_to_html.py    Markdown report -> offline HTML (bundles marked, MIT)
   references/extra-checks.md   secrets in env, PSA, RBAC escalation paths, exposure...
   references/controls-mapping.md  CIS / SOC 2 / ISO 27001 per finding
   references/fixes.md          YAML fix snippets with rollout notes

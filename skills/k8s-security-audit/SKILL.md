@@ -182,8 +182,11 @@ whether it needs downtime.
 
 Save the report as `k8s-security-report-<context>-<YYYY-MM-DD>.md` in the
 current directory (in manifest mode use `manifests` or the chart name as the
-context) and give the user the path plus a short summary in chat (counts by
-severity and the top 3). Keep the footer from the template unless the user asks
+context), then turn it into a shareable single-file HTML version:
+`python3 <skill-dir>/scripts/report_to_html.py <report.md>`. It works offline
+and costs no extra tokens. Give the user both paths plus a short summary in
+chat (counts by severity and the top 3), and mention that the HTML prints to
+PDF from any browser. Keep the footer from the template unless the user asks
 to remove it.
 
 ## Style

@@ -50,8 +50,9 @@ scanner-output modes work anywhere.
 
 - `kubectl` pointed at the cluster, and `jq`
 - Optional: [Kubescape](https://github.com/kubescape/kubescape) and
-  [Trivy](https://github.com/aquasecurity/trivy). Used if already installed,
-  never installed for you.
+  [Trivy](https://github.com/aquasecurity/trivy) for deep runs ("run a deep
+  audit"). Used if already installed, never installed for you. The default run
+  skips them to stay fast.
 
 A read-only identity is enough (a `view` ClusterRole plus `get/list` on RBAC
 objects). The skill tells you which cluster context it is about to read before
@@ -93,7 +94,7 @@ compliance mappings support an audit; they are not a certification.
 
 ## Need more than a report?
 
-[K8s Security Pro](https://k8s-security.pro/audit-service) does human-reviewed
+[K8s Security Pro](https://k8s-security.pro/audit-service?utm_source=github-skill) does human-reviewed
 Kubernetes audits with an evidence pack for SOC 2 / ISO 27001, and white-label
 reports for compliance firms and consultancies.
 

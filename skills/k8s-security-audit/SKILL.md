@@ -29,6 +29,17 @@ value is the triage, the grouping by root cause, and fixes that fit this cluster
   manifest and scanner-output modes, do not touch kubectl or the kubeconfig at all.
 - Nothing leaves the machine. Do not upload output to any service.
 
+## Step 0: pick the depth
+
+- **Standard (default):** the bundled script, the extra kubectl checks and the
+  report. No Trivy, no Kubescape. Aim for a focused run: collect, triage,
+  write. This is enough to find the takeover paths and the top fixes.
+- **Deep:** only when the user asks for a deep, full or thorough audit, or for
+  image vulnerabilities. Adds Kubescape and Trivy (Step 2.3).
+
+At the end of a standard run, say in one line that a deep run adds image CVE
+and framework scans if they want it.
+
 ## Step 1: pick the mode
 
 - **Cluster mode:** the user has `kubectl` access. Preferred.
@@ -52,8 +63,8 @@ value is the triage, the grouping by root cause, and fixes that fit this cluster
    `references/extra-checks.md`: secrets in env vars, Pod Security Admission
    labels, legacy ServiceAccount token Secrets, RBAC that can read Secrets or
    create pods, exposed Services, PodDisruptionBudgets, API server version.
-3. Deeper scanners, only if already installed (check with `command -v`; do not
-   install anything without asking):
+3. Deep runs only. Deeper scanners, only if already installed (check with
+   `command -v`; do not install anything without asking):
    - `kubescape scan framework nsa --format json --output ks.json` (run
      `kubescape list frameworks` first and add the CIS framework that matches
      the cluster, for example the EKS or AKS one)
@@ -96,8 +107,8 @@ report.
    - extra checks: `env[].value` with credential-like names, `secretKeyRef`
      env vars, PSA labels on Namespace objects, Service `type`,
      `hostPort`, `seccompProfile`, PDBs for multi-replica workloads.
-3. Offline scanners, only if installed: `trivy config <dir>` and
-   `kubescape scan <dir>`. Use them as a cross-check, not as the finding list.
+3. Deep runs only. Offline scanners, only if installed: `trivy config <dir>`
+   and `kubescape scan <dir>`. Use them as a cross-check, not as the finding list.
 4. What manifests cannot show (RBAC bindings defined elsewhere, what the target
    cluster enforces, CNI policy support, control plane settings) goes in
    "Not assessed".

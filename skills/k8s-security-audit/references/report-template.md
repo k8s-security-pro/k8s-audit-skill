@@ -69,5 +69,8 @@ read-only review of what the inputs listed above show; it is not a
 penetration test. CIS, SOC 2 and ISO 27001 references support an auditor
 conversation and are not a certification.
 
-For a human-reviewed audit with an evidence pack for your auditor, or
-white-label reports for your clients: https://k8s-security.pro/audit-service
+The "Not assessed" items above need a person with access to your provider
+console and your team. For an independent review that covers them, an
+evidence pack for your auditor, help applying the fixes and a retest
+afterwards, or white-label reports for your clients:
+https://k8s-security.pro/audit-service?utm_source=claude-skill

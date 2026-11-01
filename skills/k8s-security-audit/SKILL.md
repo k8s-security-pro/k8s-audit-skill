@@ -19,8 +19,8 @@ value is the triage, the grouping by root cause, and fixes that fit this cluster
   `patch`, `edit`, `delete`, `label`, `annotate`, `scale`, `exec`, `cp`,
   `port-forward`, `drain` or `cordon`, even if the user asks you to fix
   something during the audit. Put fixes in the report; the user applies them.
-- **Never read secret values.** Do not run `kubectl get secret -o yaml/json` or
-  decode Secret data. Names, types and where a Secret is referenced are enough.
+- **Never read secret values.** Do not output Secret objects as YAML or JSON and
+  never decode Secret data. Names, types and where a Secret is referenced are enough.
   If secret values show up in some output (an env var with a literal token,
   a ConfigMap with a password), report where it is and redact the value.
 - **Confirm the target first (cluster mode).** Run `kubectl config current-context`

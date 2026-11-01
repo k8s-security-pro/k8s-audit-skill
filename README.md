@@ -32,12 +32,8 @@ See what the output looks like: [sample report](https://k8s-security.pro/sample-
 /plugin install k8s-security-audit@k8s-security-pro
 ```
 
-Or copy the skill folder by hand:
-
-```bash
-git clone https://github.com/k8s-security-pro/k8s-audit-skill.git
-cp -r k8s-audit-skill/skills/k8s-security-audit ~/.claude/skills/
-```
+Or install it by hand: download this repository and copy the
+`skills/k8s-security-audit` folder into `~/.claude/skills/`.
 
 ### Claude.ai / Claude Desktop
 
@@ -83,9 +79,9 @@ skills/k8s-security-audit/
   references/report-template.md
 ```
 
-`scripts/k8s-audit.sh` is the same script as
-[k8s-audit](https://github.com/k8s-security-pro/k8s-audit), which also runs
-standalone and in CI.
+`scripts/k8s-audit.sh` is a copy of
+[k8s-audit](https://github.com/k8s-security-pro/k8s-audit) (same checks, no
+promotional footer), which also runs standalone and in CI.
 
 ## What it runs and what it sends
 

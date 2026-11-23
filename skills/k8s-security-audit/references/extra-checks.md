@@ -35,8 +35,26 @@ kubectl get ns -o json | jq -r '
 ```
 
 Application namespaces with enforce `-` or `privileged` and no Kyverno /
-Gatekeeper policy are a finding. Check for policy engines with
-`kubectl get clusterpolicies.kyverno.io,constrainttemplates 2>/dev/null`.
+Gatekeeper policy are a finding. Check whether a policy engine is installed
+with `kubectl api-resources -o name | grep -E 'kyverno.io|gatekeeper.sh'`:
+no output means neither is installed.
+
+## Seccomp profile and hostPort
+
+```bash
+kubectl get pods -A -o json | jq -r '
+  .items[] | .metadata.namespace as $ns | .metadata.name as $p
+  | (.spec.securityContext.seccompProfile.type // "") as $pod
+  | ((.spec.containers // []) + (.spec.initContainers // []))[]
+  | [ $ns + "/" + $p, .name,
+      ((.securityContext.seccompProfile.type // "") | if . == "" then ($pod | if . == "" then "unset" else . end) else . end),
+      ([.ports[]?.hostPort | select(. != null)] | map(tostring) | join(",") | if . == "" then "-" else . end) ]
+  | @tsv' | awk -F'\t' '$3 == "unset" || $3 == "Unconfined" || $4 != "-"'
+```
+
+Columns: pod, container, seccomp profile, hostPorts. A profile of `unset` or
+`Unconfined` is the CIS 5.7.2 finding (`RuntimeDefault` is the fix); a
+`hostPort` on an application container is a Medium exposure finding.
 
 ## Legacy ServiceAccount token Secrets (long-lived tokens)
 

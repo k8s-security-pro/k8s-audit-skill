@@ -8,7 +8,7 @@ Fill every bracket. Remove sections that would be empty, except "Not assessed".
 
 **Date:** [YYYY-MM-DD] · **Cluster:** [provider and version, e.g. EKS 1.30, or "n/a (manifest review)"] · **Scope:** [all namespaces / list] · **Mode:** [cluster / manifests / scanner output]
 
-**Input:** [what actually ran: k8s-audit.sh, extra kubectl queries, rendered manifests, Kubescape, Trivy]. Read-only; nothing was changed.
+**Input:** [what actually ran: baseline checks, extra kubectl queries, rendered manifests, Kubescape, Trivy]. Read-only; nothing was changed.
 
 ## Summary
 

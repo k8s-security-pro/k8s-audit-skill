@@ -70,29 +70,29 @@ single-file `.html` version (works offline, prints to PDF from any browser).
 
 ```
 skills/k8s-security-audit/
-  SKILL.md                     workflow, safety rules, triage logic
-  scripts/k8s-audit.sh         16 high-signal checks (kubectl + jq), JSON output
-  scripts/report_to_html.py    Markdown report -> static offline HTML (stdlib only, no JS)
-  references/extra-checks.md   secrets in env, PSA, RBAC escalation paths, exposure...
+  SKILL.md                        workflow, safety rules, triage logic
+  references/baseline-checks.md   16 high-signal checks as kubectl + jq commands
+  references/extra-checks.md      secrets in env, PSA, RBAC escalation paths, exposure...
   references/controls-mapping.md  CIS / SOC 2 / ISO 27001 per finding
-  references/fixes.md          YAML fix snippets with rollout notes
-  references/report-template.md
+  references/fixes.md             YAML fix snippets with rollout notes
+  references/report-template.md   report structure
+  references/report-html.md       how the single-file HTML version is written
 ```
 
-`scripts/k8s-audit.sh` is a copy of
-[k8s-audit](https://github.com/k8s-security-pro/k8s-audit) (same checks, no
-promotional footer), which also runs standalone and in CI.
+The skill is plain Markdown: every command it runs is written out in these
+files, so you can read all of it before you install. The same baseline checks
+also exist as a standalone script for CI and for use without Claude:
+[k8s-audit](https://github.com/k8s-security-pro/k8s-audit).
 
 ## What it runs and what it sends
 
-Everything is in this repo as plain, readable files: no binaries, no minified
-code, no network calls of its own.
+Everything is in this repo as plain Markdown: no scripts, no binaries, no
+network calls of its own.
 
 - **Runs:** `kubectl get`, `kubectl auth can-i`, `kubectl version`,
-  `kubectl config current-context`, `jq`, `scripts/k8s-audit.sh` (kubectl + jq,
-  read-only) and `scripts/report_to_html.py` (Python standard library). On a
-  deep run only, and only if already installed: `kubescape` and
-  `trivy k8s --disable-node-collector`.
+  `kubectl config current-context` and `jq`, exactly as written in
+  `references/`. On a deep run only, and only if already installed:
+  `kubescape` and `trivy k8s --disable-node-collector`.
 - **Never runs:** `apply`, `create`, `patch`, `edit`, `delete`, `exec`, `cp`,
   `port-forward`, `drain`, or anything that reads Secret values.
 - **Writes:** the report (`.md` and `.html`) in your current directory.

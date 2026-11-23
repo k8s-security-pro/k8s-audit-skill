@@ -14,8 +14,8 @@ value is the triage, the grouping by root cause, and fixes that fit this cluster
 
 - **Read-only.** Only run `kubectl get`, `kubectl describe` (never on Secrets),
   `kubectl auth can-i`, `kubectl api-resources`, `kubectl version`,
-  `kubectl config current-context`, the bundled `scripts/k8s-audit.sh`, and the
-  scanners listed below in their report modes. Never run `apply`, `create`,
+  `kubectl config current-context`, `jq` over that output, and the scanners
+  listed below in their report modes. Never run `apply`, `create`,
   `patch`, `edit`, `delete`, `label`, `annotate`, `scale`, `exec`, `cp`,
   `port-forward`, `drain` or `cordon`, even if the user asks you to fix
   something during the audit. Put fixes in the report; the user applies them.
@@ -31,7 +31,7 @@ value is the triage, the grouping by root cause, and fixes that fit this cluster
 
 ## Step 0: pick the depth
 
-- **Standard (default):** the bundled script, the extra kubectl checks and the
+- **Standard (default):** the baseline checks, the extra kubectl checks and the
   report. No Trivy, no Kubescape. Aim for a focused run: collect, triage,
   write. This is enough to find the takeover paths and the top fixes.
 - **Deep:** only when the user asks for a deep, full or thorough audit, or for
@@ -54,12 +54,12 @@ and framework scans if they want it.
 
 ## Step 2: collect evidence (cluster mode)
 
-1. Baseline checks. Run the bundled script from this skill's directory:
-   `bash <skill-dir>/scripts/k8s-audit.sh --json`
-   It needs `kubectl` and `jq`, covers 16 high-signal checks and prints JSON with
-   `severity`, `domain`, `check` and `detail` per finding. If `jq` is missing,
-   tell the user and continue with the manual queries below.
-2. Checks the script does not cover. Run the queries in
+1. Baseline checks. Run the three commands in `references/baseline-checks.md`
+   as written. They need `kubectl` and `jq`, cover 16 high-signal checks and
+   print one tab-separated line per check (result, check number, title, count,
+   examples). If `jq` is missing, tell the user and read the same fields from
+   `kubectl get pods -A -o json` yourself.
+2. Checks the baseline does not cover. Run the queries in
    `references/extra-checks.md`: secrets in env vars, Pod Security Admission
    labels, legacy ServiceAccount token Secrets, RBAC that can read Secrets or
    create pods, exposed Services, PodDisruptionBudgets, API server version.
@@ -99,7 +99,7 @@ report.
    `kubectl kustomize <dir>` (local only, no cluster). If neither tool exists,
    read the templates and say which values you assumed.
 2. Apply the same checks to the rendered objects by reading the fields:
-   - script checks: `securityContext` (pod and container), `hostPID`,
+   - baseline checks: `securityContext` (pod and container), `hostPID`,
      `hostIPC`, `hostNetwork`, `hostPath`, `capabilities`, `image` tags,
      `resources.limits`, `serviceAccountName`, `automountServiceAccountToken`,
      `metadata.namespace` (missing = `default`), NetworkPolicy objects per
@@ -182,11 +182,10 @@ whether it needs downtime.
 
 Save the report as `k8s-security-report-<context>-<YYYY-MM-DD>.md` in the
 current directory (in manifest mode use `manifests` or the chart name as the
-context), then turn it into a shareable single-file HTML version:
-`python3 <skill-dir>/scripts/report_to_html.py <report.md>`. It works offline
-and costs no extra tokens. Give the user both paths plus a short summary in
-chat (counts by severity and the top 3), and mention that the HTML prints to
-PDF from any browser. Keep the footer from the template unless the user asks
+context), then write a shareable single-file HTML version next to it, following
+`references/report-html.md`. It works offline. Give the user both paths plus a
+short summary in chat (counts by severity and the top 3), and mention that the
+HTML prints to PDF from any browser. Keep the footer from the template unless the user asks
 to remove it.
 
 ## Style

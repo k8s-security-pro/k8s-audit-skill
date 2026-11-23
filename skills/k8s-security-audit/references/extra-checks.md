@@ -1,6 +1,6 @@
 # Extra checks (read-only)
 
-Queries for findings the bundled script does not cover. All need `kubectl` and
+Queries for findings the baseline checks (`baseline-checks.md`) do not cover. All need `kubectl` and
 `jq`. Add `-n <ns>` instead of `-A` to scope to one namespace. Skip
 `kube-system` and other provider namespaces in the main findings; report them in
 the "expected, verify" table.

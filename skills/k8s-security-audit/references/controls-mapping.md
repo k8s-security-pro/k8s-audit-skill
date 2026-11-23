@@ -9,19 +9,19 @@ managed benchmark has an equivalent. SOC 2 = 2017 Trust Services Criteria
 These are references to support an auditor conversation, not proof of
 compliance. Use "-" when there is no matching item; never invent one.
 
-## Checks from scripts/k8s-audit.sh
+## Checks from references/baseline-checks.md
 
 The `#` numbers are the item numbers of the k8s-security.pro 50-point checklist
-that the script covers (16 of 50), which is why they have gaps.
+that the baseline covers (16 of 50), which is why they have gaps.
 
-| Script check | Finding | CIS | SOC 2 | ISO 27001:2022 |
+| Check | Finding | CIS | SOC 2 | ISO 27001:2022 |
 |---|---|---|---|---|
 | #2 | Privileged containers | 5.2.2 | CC6.1, CC6.8 | A.8.9 |
 | #3 | allowPrivilegeEscalation not disabled | 5.2.6 | CC6.8 | A.8.9 |
 | #4 | Running as root (runAsNonRoot unset) | 5.2.7 | CC6.8 | A.8.9 |
 | #4b | readOnlyRootFilesystem not set | - | CC6.8 | A.8.9 |
 | #5 | hostPID / hostIPC / hostNetwork | 5.2.3, 5.2.4, 5.2.5 | CC6.1, CC6.8 | A.8.9 |
-| #6 | ServiceAccount token auto-mounted | 5.1.6 | CC6.1 | A.5.15, A.8.2 |
+| #6 | ServiceAccount token mounted into the pod | 5.1.6 | CC6.1 | A.5.15, A.8.2 |
 | #7 | Capabilities not dropped (ALL) | 5.2.10 | CC6.8 | A.8.9 |
 | #7b | Dangerous capabilities added (SYS_ADMIN, NET_ADMIN, NET_RAW...) | 5.2.8, 5.2.9 | CC6.8 | A.8.9 |
 | #9 | hostPath volumes | 5.2.12 | CC6.1, CC6.8 | A.8.9 |

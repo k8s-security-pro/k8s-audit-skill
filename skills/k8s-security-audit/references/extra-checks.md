@@ -40,10 +40,19 @@ Gatekeeper policy are a finding. Check for policy engines with
 
 ## Legacy ServiceAccount token Secrets (long-lived tokens)
 
+This check reads ServiceAccount objects only; the skill never lists or reads
+Secret objects. ServiceAccounts that still reference token Secrets (created
+before Kubernetes 1.24, or kept through upgrades) show up here:
+
 ```bash
-kubectl get secrets -A --field-selector type=kubernetes.io/service-account-token \
-  -o custom-columns=NS:.metadata.namespace,NAME:.metadata.name,SA:.metadata.annotations.kubernetes\\.io/service-account\\.name
+kubectl get serviceaccounts -A -o json | jq -r '
+  .items[] | select((.secrets // []) | length > 0)
+  | "\(.metadata.namespace)/\(.metadata.name) -> \([.secrets[].name] | join(", "))"'
 ```
+
+Token Secrets created by hand are not linked from the ServiceAccount, so they
+do not appear here. If the user wants those covered, Kubescape and Trivy
+report them, or the user can share the Secret names themselves.
 
 ## RBAC: who can read Secrets, create pods, escalate
 

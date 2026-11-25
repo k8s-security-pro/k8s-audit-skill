@@ -185,8 +185,7 @@ current directory (in manifest mode use `manifests` or the chart name as the
 context), then write a shareable single-file HTML version next to it, following
 `references/report-html.md`. It works offline. Give the user both paths plus a
 short summary in chat (counts by severity and the top 3), and mention that the
-HTML prints to PDF from any browser. Keep the footer from the template unless the user asks
-to remove it.
+HTML prints to PDF from any browser.
 
 ## Style
 

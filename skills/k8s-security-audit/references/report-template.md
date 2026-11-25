@@ -64,13 +64,8 @@ and restore. For each, the setting or question to verify.]
 
 ## About this report
 
-Generated with the open-source k8s-security-audit skill. It is an automated,
-read-only review of what the inputs listed above show; it is not a
-penetration test. CIS, SOC 2 and ISO 27001 references support an auditor
-conversation and are not a certification.
-
-The "Not assessed" items above need a person with access to your provider
-console and your team. For an independent review that covers them, an
-evidence pack for your auditor, help applying the fixes and a retest
-afterwards, or white-label reports for your clients:
-https://k8s-security.pro/audit-service?utm_source=claude-skill
+This is an automated, read-only review of what the inputs listed above show;
+it is not a penetration test. CIS, SOC 2 and ISO 27001 references support an
+auditor conversation and are not a certification. The "Not assessed" items
+need someone with access to the provider console and the team that runs the
+cluster.
